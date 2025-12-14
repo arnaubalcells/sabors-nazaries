@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sabors Nazaríes — Cuina Andalusa a Barcelona</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* -------------------------
+       PALETA & GLOBAL
+       ------------------------- */
+    :root{
+      --bg: #f4efe2;
+      --card: #fffdfc;
+      --primary: #18644f; /* verd/principal */
+      --primary-2: #114f45;
+      --accent: #d99a3c;  /* or */
+      --muted: #8b7b6a;
+      --text: #2f241f;
+      --glass: rgba(255,255,255,0.85);
+      --overlay: rgba(0,0,0,0.6);
+      --radius: 14px;
+      --shadow: 0 10px 30px rgba(0,0,0,0.12);
+      --transition: 300ms cubic-bezier(.2,.9,.2,1);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:"Poppins",system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
+      background:var(--bg);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.45;
+    }
+
+    a { color: inherit; }
+
+    /* -------------------------
+       HEADER + NAV
+       ------------------------- */
+    header{
+      background: linear-gradient(90deg,var(--primary),var(--primary-2));
+      color: #fff;
+      padding:1.05rem 1rem;
+      text-align:center;
+      box-shadow: 0 6px 18px rgba(17,79,69,0.12);
+      position:sticky;
+      top:0;
+      z-index:50;
+    }
+    header h1{margin:0;font-weight:700;letter-spacing:0.6px;font-size:1.35rem}
+    header p{margin:0;font-weight:300;font-size:0.9rem;opacity:0.95}
+
+    /* -------------------------
+       HERO
+       ------------------------- */
+    .hero{
+      height:68vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      color:white;
+      position:relative;
+      overflow:hidden;
+      background-image: url("images/patioandaluz.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    /* Perquè el text es vegi millor */
+    position: relative;
+}
+
+.hero::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.45); /* foscor suau */
+    backdrop-filter: blur(2px);
+    z-index: 0;
+}
+
+.hero h1,
+.hero p,
+.hero button {
+    position: relative;
+    z-index: 1;
+}
+    }
+    .hero::after{
+      content:"";
+      position:absolute; inset:0;
+      background: linear-gradient(180deg, rgba(0,0,0,0.25), rgba(0,0,0,0.55));
+      mix-blend-mode:multiply;
+    }
+    .hero .hero-inner{
+      position:relative;
+      z-index:2;
+      padding:1rem;
+      max-width:1100px;
+      width:100%;
+      color:#fff;
+      text-shadow: 0 6px 20px rgba(0,0,0,0.45);
+      animation: heroIn 900ms var(--transition);
+    }
+    @keyframes heroIn{
+      from { transform: translateY(20px) scale(.99); opacity:0; }
+      to { transform: translateY(0) scale(1); opacity:1; }
+    }
+    .hero h2{font-size: clamp(2rem, 4vw, 3.2rem); margin:0 0 .35rem; font-weight:800; letter-spacing:1px}
+    .hero p{margin:0;font-size:1.05rem;opacity:.95}
+
+    /* DESIGN ORNAMENT (nazarí tile hint) */
+    .nazari-ornament{
+      position:absolute;
+      right:1.5rem;
+      bottom:1.5rem;
+      width:140px;
+      height:140px;
+      background: radial-gradient(circle at 30% 30%, rgba(217,154,60,0.12), transparent 20%),
+                  conic-gradient(from 0deg, rgba(255,255,255,0.05), rgba(0,0,0,0.05));
+      border-radius:18px;
+      transform: rotate(15deg);
+      filter: blur(.2px) saturate(1.05);
+      opacity:.95;
+    }
+
+    /* -------------------------
+       EXTRA / PHILOSOPHY
+       ------------------------- */
+    .extra{
+      background: linear-gradient(180deg, rgba(217,154,60,0.97), rgba(217,154,60,0.90));
+      color: white;
+      padding: 36px 20px;
+      text-align:center;
+    }
+    .extra h3{margin:0 0 10px;font-size:1.15rem; text-transform:uppercase; letter-spacing:1px}
+    .extra p{margin:0 auto;max-width:900px;font-size:1rem;line-height:1.6;opacity:.98}
+
+    /* -------------------------
+       CONTAINER
+       ------------------------- */
+    .container{max-width:1100px;margin:34px auto;padding:0 16px}
+
+    /* -------------------------
+       MENU GRID
+       ------------------------- */
+    .menu-section{margin-top:12px}
+    .section-title{display:flex;align-items:center;gap:12px}
+    .section-title h3{margin:0;color:var(--primary);text-transform:uppercase;letter-spacing:1.2px;font-size:0.95rem}
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+      gap:18px;
+      margin-top:14px;
+    }
+
+    .card{
+      background:var(--card);
+      border-radius:var(--radius);
+      padding:12px;
+      box-shadow:var(--shadow);
+      overflow:hidden;
+      transform-origin:center;
+      transition: transform var(--transition), box-shadow var(--transition);
+      cursor:pointer;
+      border:1px solid rgba(16,16,16,0.03);
+    }
+    .card:hover{ transform: translateY(-6px) scale(1.01); box-shadow: 0 18px 40px rgba(0,0,0,0.12); }
+
+    .card img{
+      width:100%;
+      height:140px;
+      object-fit:cover;
+      border-radius:10px;
+      display:block;
+      transition: transform 450ms ease, filter 450ms ease;
+    }
+    .card:hover img{ transform:scale(1.07); filter:brightness(1.05); }
+
+    .card .meta{ display:flex; justify-content:space-between; align-items:center; margin-top:10px; gap:8px; }
+    .card .meta .name{ font-weight:600; color:var(--text); }
+    .card .meta .price{ font-weight:700; color:var(--accent); font-size:0.98rem }
+
+    /* small caption */
+    .card .caption{ margin-top:8px; font-size:0.9rem; color:var(--muted) }
+
+    /* -------------------------
+       MODAL
+       ------------------------- */
+    .modal{
+      position:fixed; inset:0; display:flex; align-items:center; justify-content:center;
+      background: var(--overlay); z-index:9999; padding:18px;
+      visibility:hidden; opacity:0; transition: opacity 320ms ease, visibility 320ms ease;
+    }
+    .modal[aria-hidden="false"]{ visibility:visible; opacity:1; }
+    .modal-box{
+      background: linear-gradient(180deg,#fff,#fcfcfb);
+      max-width:720px; width:100%; border-radius:14px; box-shadow: 0 30px 80px rgba(0,0,0,0.45);
+      display:flex; gap:18px; align-items:flex-start; padding:18px; transform:translateY(-20px) scale(.98);
+      transition: transform 320ms ease, opacity 320ms ease;
+    }
+    .modal[aria-hidden="false"] .modal-box{ transform:none; }
+
+    .modal-left{ min-width:220px; max-width: 40%; }
+    .modal-left img{ width:100%; height:220px; object-fit:cover; border-radius:10px; box-shadow: 0 8px 30px rgba(0,0,0,0.14); }
+    .modal-right{ flex:1; position:relative; padding-bottom:6px; }
+    .modal-right h4{ margin:0 0 8px; color:var(--primary); }
+    .modal-right p{ margin:0 0 8px; color:var(--text); }
+    .modal-right .ing{ font-weight:600; color:var(--muted); margin-top:6px }
+    .modal-close{
+      position:absolute; right:6px; top:6px; border:none; background:transparent; font-size:20px; color:var(--primary); cursor:pointer;
+    }
+
+    /* responsive modal layout */
+    @media (max-width:900px){
+      .modal-box{ flex-direction:column; align-items:center }
+      .modal-left{ width:100%; max-width: 100% }
+      .modal-left img{ height:180px }
+      .modal-right{ padding-top:6px; }
+    }
+
+    /* FOOTER */
+    footer{ padding:24px 16px; text-align:center; color:var(--muted); font-size:.95rem; margin-top:30px; }
+
+    /* small helpers */
+    .muted{ color:var(--muted); font-size:.95rem; }
+    .spacer{height:10px}
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <h1>Sabors Nazaríes</h1>
+    <p>Autèntica cuina andalusa — portem el Sud a Barcelona</p>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero" role="img" aria-label="Fons andalusí">
+    <div class="hero-inner">
+      <h2>Sabors Nazaríes</h2>
+      <p>Tradició, història i sabors del sud d'Espanya en cada plat.</p>
+    </div>
+    <div class="nazari-ornament" aria-hidden="true"></div>
+  </section>
+
+  <!-- PHILOSOPHY -->
+  <section class="extra" aria-labelledby="philo">
+    <div class="container">
+      <h3 id="philo">La nostra filosofia</h3>
+      <p>Portem l'autèntic sabor d'Andalusia a Barcelona: receptes tradicionals, ingredients de qualitat i una presentació moderna. Vols provar històries en cada mossegada?</p>
+    </div>
+  </section>
+
+  <!-- MENU CONTAINER -->
+  <main class="container" id="mainContent">
+
+    <!-- ENTRANTS -->
+    <section class="menu-section" aria-labelledby="entrants-title">
+      <div class="section-title"><h3 id="entrants-title">Entrants</h3></div>
+      <div class="grid" id="entrantsGrid">
+
+        <!-- Salmorejo -->
+        <article class="card" role="button" tabindex="0" data-modal="salmorejoModal" aria-controls="salmorejoModal">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/e/eb/Salmorejo_cordobes.jpg" alt="Salmorejo">
+          <div class="meta"><div class="name">Salmorejo</div><div class="price">3,00€</div></div>
+          <div class="caption">Crema freda típica de Còrdova</div>
+        </article>
+
+        <!-- Gazpacho -->
+        <article class="card" role="button" tabindex="0" data-modal="gazpachoModal" aria-controls="gazpachoModal">
+          <img src="images/gazpacho.jpg" alt="Gazpacho">
+          <div class="meta"><div class="name">Gazpacho</div><div class="price">3,00€</div></div>
+          <div class="caption">Refrescant i saludable</div>
+        </article>
+
+        <!-- Ajoblanco -->
+        <article class="card" role="button" tabindex="0" data-modal="ajoblancoModal" aria-controls="ajoblancoModal">
+          <img src="https://t3.ftcdn.net/jpg/04/68/76/62/360_F_468766299_BalJBvjH7hRuPiDFvCmqKUYvwpyNT8v.jpg" alt="Ajoblanco">
+          <div class="meta"><div class="name">Ajoblanco</div><div class="price">3,00€</div></div>
+          <div class="caption">Crema blanca d'ametlles</div>
+        </article>
+
+        <!-- Pipirrana -->
+        <article class="card" role="button" tabindex="0" data-modal="pipirranaModal" aria-controls="pipirranaModal">
+          <img src="images/pipirrana.jpg" alt="Pipirrana">
+          <div class="meta"><div class="name">Pipirrana</div><div class="price">3,00€</div></div>
+          <div class="caption">Amanida fresca d'estiu</div>
+        </article>
+
+        <!-- Berenjenas con miel -->
+        <article class="card" role="button" tabindex="0" data-modal="berenjenasModal" aria-controls="berenjenasModal">
+          <img src="https://danzadefogones.com/wp-content/uploads/2015/04/Berenjenas-con-miel-de-caña.jpg" alt="Berenjenas con miel">
+          <div class="meta"><div class="name">Berenjenas con miel</div><div class="price">4,00€</div></div>
+          <div class="caption">Dolç-salat amb empremta àrab</div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- PLATS PRINCIPALS -->
+    <section class="menu-section" aria-labelledby="principals-title">
+      <div class="section-title"><h3 id="principals-title">Plats Principals</h3></div>
+      <div class="grid" id="principalsGrid">
+
+        <!-- Habas con jamón -->
+        <article class="card" role="button" tabindex="0" data-modal="habasModal" aria-controls="habasModal">
+          <img src="https://imgs.search.brave.com/aeHjfII2v_9COLxhier15zxreDO59Pco8a439LprdhE/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9vbG9y/YWhpZXJiYWJ1ZW5h/LmNvbS93cC1jb250/ZW50L3VwbG9hZHMv/MjAxNS8wNC9IYWJh/cy1jb24tamFtb24t/YWwtcGltZW50b24u/anBn" alt="Habas con jamón">
+          <div class="meta"><div class="name">Habas con Jamón</div><div class="price">4,00€</div></div>
+          <div class="caption">Faves de primavera amb pernil</div>
+        </article>
+
+        <!-- Migas -->
+        <article class="card" role="button" tabindex="0" data-modal="migasModal" aria-controls="migasModal">
+          <img src="https://imgs.search.brave.com/yAPr8kT1l2eKiU0iLc1X9hxfYdZZYwiaxmWHXkAEYOw/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/Y29jaW5vdmEuY29t/L3dwLWNvbnRlbnQv/dXBsb2Fkcy8yMDE2/LzAyL21pZ2FzLWFu/ZGFsdXphcy0xNDQw/eDgxMC5qcGc" alt="Migas">
+          <div class="meta"><div class="name">Migas</div><div class="price">3,50€</div></div>
+          <div class="caption">Plat energètic de pastors</div>
+        </article>
+
+        <!-- Flamenquines -->
+        <article class="card" role="button" tabindex="0" data-modal="flamenquinesModal" aria-controls="flamenquinesModal">
+          <img src="https://imgs.search.brave.com/ePvy1OjNMvBlQPMv3TohCQTZJ4VqRq145kEgwNHh8oI/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pLnBp/bmltZy5jb20vb3Jp/Z2luYWxzLzkxL2Y5/L2VmLzkxZjllZmNj/OTQwNGRhNzI3MmIw/MjQxMmU1NzUyNjBj/LmpwZw" alt="Flamenquines">
+          <div class="meta"><div class="name">Flamenquines</div><div class="price">3,50€</div></div>
+          <div class="caption">Rotllets arrebossats i cruixents</div>
+        </article>
+
+        <!-- Pescaíto frito -->
+        <article class="card" role="button" tabindex="0" data-modal="pescaitoModal" aria-controls="pescaitoModal">
+          <img src="https://imgs.search.brave.com/TtQ7JHwDeyVqyLVxXekd3oVx20G0xbKdllfmgLv7KkE/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWct/Z2xvYmFsLmNwY2Ru/LmNvbS9yZWNpcGVz/L2ZmYWU1NjJhZmEw/MzgxZjEvMzAweDIy/MGNxNzAvYm9xdWVy/b25lcy1mcml0b3Mt/YWwtbGltb24tZW4t/c2FsbXVlcmEtZm90/by1wcmluY2lwYWwu/anBn" alt="Pescaito frito">
+          <div class="meta"><div class="name">Pescaito frito</div><div class="price">4,00€</div></div>
+          <div class="caption">Fregit daurat de la costa</div>
+        </article>
+
+        <!-- Rabo de toro -->
+        <article class="card" role="button" tabindex="0" data-modal="raboModal" aria-controls="raboModal">
+          <img src="https://imgs.search.brave.com/0Nb_TzhUPn7dDECCHPXFQ7KncnFeEEmYN2i_ALBo1Jw/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/ZWxhZGVyZXpvLmNv/bS93cC1jb250ZW50/L3VwbG9hZHMvMjAx/MC8wNi9yYWJvLWRl/LXRvcm8tZ3Vpc2Fk/by0xLTEyMDB4ODAx/LmpwZw" alt="Rabo de toro">
+          <div class="meta"><div class="name">Rabo de Toro</div><div class="price">7,00€</div></div>
+          <div class="caption">Guisat intens, cocció lenta</div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- POSTRES -->
+    <section class="menu-section" aria-labelledby="postres-title">
+      <div class="section-title"><h3 id="postres-title">Postres</h3></div>
+      <div class="grid" id="postresGrid">
+
+        <!-- Pestiños -->
+        <article class="card" role="button" tabindex="0" data-modal="pestinosModal" aria-controls="pestinosModal">
+          <img src="https://imgs.search.brave.com/nusU_bOGniP1zfGwJfKe3xIRf7mWCWk8VjjP7PufcSc/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly90My5m/dGNkbi5uZXQvanBn/LzAwLzI3LzI0Lzcw/LzI0MF9GXzI3MjQ3/MDM0XzQ5bldEdzFp/OG9ramYzcEhCckls/SnZtaE9JN2hxS1Zs/LmpwZw" alt="Pestiños">
+          <div class="meta"><div class="name">Pestiños</div><div class="price">3,00€</div></div>
+          <div class="caption">Dolç tradicional de festa</div>
+        </article>
+
+        <!-- Piononos -->
+        <article class="card" role="button" tabindex="0" data-modal="piononosModal" aria-controls="piononosModal">
+          <img src="images/pionono.jpg">
+          <div class="meta"><div class="name">Piononos</div><div class="price">3,00€</div></div>
+          <div class="caption">Postre delicat de Santa Fe</div>
+        </article>
+
+        <!-- Roscos de Loja -->
+        <article class="card" role="button" tabindex="0" data-modal="roscosModal" aria-controls="roscosModal">
+          <img src="https://imgs.search.brave.com/fzGeCgYsG0yxkZd6A7UVlwFywHWJjvFc1ub9CCYA5OE/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9ndWlh/Z2FzdHJvbm9taWNh/LnNhYm9yZ3JhbmFk/YS5lcy93cC1jb250/ZW50L3VwbG9hZHMv/MjAyMi8xMS9yb3Nj/b3MyLmpwZw" alt="Roscos de Loja">
+          <div class="meta"><div class="name">Roscos de Loja</div><div class="price">2,50€</div></div>
+          <div class="caption">Bizcocho tradicional de Loja</div>
+        </article>
+
+        <!-- Torrija -->
+        <article class="card" role="button" tabindex="0" data-modal="torrijaModal" aria-controls="torrijaModal">
+          <img src="images/torrija.jpg" alt="Torrija">
+          <div class="meta"><div class="name">Torrija</div><div class="price">1,00€</div></div>
+          <div class="caption">Clàssic de Setmana Santa</div>
+        </article>
+
+      </div>
+    </section>
+
+    <div class="spacer"></div>
+
+    <!-- CONTACTE / HORARI -->
+    <section class="menu-section" aria-labelledby="info-title">
+      <div class="section-title"><h3 id="info-title">Informació</h3></div>
+      <div style="display:flex;gap:20px;flex-wrap:wrap;margin-top:12px;">
+        <div style="flex:1;min-width:220px;background:var(--card);padding:14px;border-radius:12px;box-shadow:var(--shadow)"><strong>Adreça</strong><div class="muted">Carrer Exemple, 123 · Barcelona</div></div>
+        <div style="flex:1;min-width:220px;background:var(--card);padding:14px;border-radius:12px;box-shadow:var(--shadow)"><strong>Horari</strong><div class="muted">Dimarts - Diumenge · 12:00 - 17:00 20:00 - 23:00</div></div>
+        <div style="flex:1;min-width:220px;background:var(--card);padding:14px;border-radius:12px;box-shadow:var(--shadow)"><strong>Contacte</strong><div class="muted">info@saborsnazaries.cat</div></div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer>© 2025 Sabors Nazaríes · Projecte Treball de Recerca — Fet per Arnau Balcells Tejeda</footer>
+
+  <!-- ======================
+       MODALS (un per plat)
+       IDs coincideixen amb atribut data-modal dels cards
+       ====================== -->
+
+  <!-- Salmorejo -->
+  <div id="salmorejoModal" class="modal" aria-hidden="true" role="dialog" aria-label="Salmorejo">
+    <div class="modal-box" role="document">
+      <div class="modal-left">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/e/eb/Salmorejo_cordobes.jpg" alt="Salmorejo">
+      </div>
+      <div class="modal-right">
+        <button class="modal-close" aria-label="Tanca" data-modal-close="salmorejoModal">&times;</button>
+        <h4>Salmorejo</h4>
+        <p><strong>Història:</strong> Crema freda originària de Còrdova, elaborada tradicionalment amb tomàquet madur i pa. Era una manera de reutilitzar pa dur acompanyat dels productes locals.</p>
+        <p class="ing"><strong>Ingredients:</strong> Tomàquet, pa, oli d'oliva, all, sal. Decoració: ou dur i pernil.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gazpacho -->
+  <div id="gazpachoModal" class="modal" aria-hidden="true" role="dialog" aria-label="Gazpacho">
+    <div class="modal-box">
+      <div class="modal-left">
+        <img src="images/gazpacho.jpg" alt="Gazpacho">
+      </div>
+      <div class="modal-right">
+        <button class="modal-close" aria-label="Tanca" data-modal-close="gazpachoModal">&times;</button>
+        <h4>Gazpacho</h4>
+        <p><strong>Història:</strong> Sopa freda de la cuina popular andalusa, ideal per als mesos calorosos. Té influències agrícoles i mediterrànies.</p>
+        <p class="ing"><strong>Ingredients:</strong> Tomàquet, pebrot, cogombre, all, oli d'oliva, vinagre i pa.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ajoblanco -->
+  <div id="ajoblancoModal" class="modal" aria-hidden="true" role="dialog" aria-label="Ajoblanco">
+    <div class="modal-box">
+      <div class="modal-left">
+        <img src="https://t3.ftcdn.net/jpg/04/68/76/62/360_F_468766299_BalJBvjH7hRuPiDFvCmqKUYvwpyNT8v.jpg" alt="Ajoblanco">
+      </div>
+      <div class="modal-right">
+        <button class="modal-close" aria-label="Tanca" data-modal-close="ajoblancoModal">&times;</button>
+        <h4>Ajoblanco</h4>
+        <p><strong>Història:</strong> Crema blanca d'ametlles típica de Màlaga i la costa malaguenya. Plat suau i refrescant de l'estiu.</p>
+        <p class="ing"><strong>Ingredients:</strong> Ametlles, all, pa, oli d'oliva, vinagre. Sols acompanyar amb raïm o pernil ibèric.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pipirrana -->
+  <div id="pipirranaModal" class="modal" aria-hidden="true" role="dialog" aria-label="Pipirrana">
+    <div class="modal-box">
+      <div class="modal-left">
+        <img src="images/pipirrana.jpg" alt="Pipirrana">
+      </div>
+      <div class="modal-right">
+        <button class="modal-close" aria-label="Tanca" data-modal-close="pipirranaModal">&times;</button>
+        <h4>Pipirrana</h4>
+        <p><strong>Història:</strong> Amanida fresca típica de Jaén i zones de l'interior, molt consumida a l'estiu per la seva senzillesa i frescor.</p>
+        <p class="ing"><strong>Ingredients:</strong> Tomàquet, pebrot, ceba, cogombre, oli d'oliva, vinagre i sal.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Berenjenas -->
+  <div id="berenjenasModal" class="modal" aria-hidden="true" role="dialog" aria-label="Berenjenas con miel">
+    <div class="modal-box">
+      <div class="modal-left">
+        <img src="https://danzadefogones.com/wp-content/uploads/2015/04/Berenjenas-con-miel-de-caña.jpg" alt="Berenjenas con miel">
+      </div>
+      <div class="modal-right">
+        <button class="modal-close" aria-label="Tanca" data-modal-close="berenjenasModal">&times;</button>
+        <h4>Berenjenas con miel</h4>
+        <p><strong>Història:</strong> Alta empremta àrab al sud d'Espanya; combinació dolç-salat que triomfa en fires i taules populars.</p>
+        <p class="ing"><strong>Ingredients:</strong> Albergínia, farina, oli per fregir, mel de canya.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Habas -->
+  <div id="habasModal" class="modal" aria-hidden="true" role="dialog" aria-label="Habas con Jamón">
+    <div class="modal-box">
+      <div class="modal-left">
+        <img src="https://imgs.search.brave.com/aeHjfII2v_9COLxhier15zxreDO59Pco8a439LprdhE/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9vbG9y/YWhpZXJiYWJ1ZW5h/LmNvbS93cC1jb250/ZW50L3VwbG9hZHMv/MjAxNS8wNC9IYWJh/cy1jb24tamFtb24t/YWwtcGltZW50b24u/anBn" alt="Habas con Jamón">
+      </div>
+      <div class="modal-right">
+        <button class="modal-close" aria-label="Tanca" data-modal-close="habasModal">&times;</button>
+        <h4>Habas con Jamón</h4>
+        <p><strong>Història:</strong> Plat de primavera que aprofita faves fresques combinades amb el sabor intens del pernil curat.</p>
+        <p class="ing"><strong>Ingredients:</strong> Faves, pernil, all, ceba, oli d'oliva, sal i pebre.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Migas -->
+  <div id="migasModal" class="modal" aria-hidden="true" role="dialog" aria-label="Migas">
+    <div class="modal-box">
+      <div class="modal-left">
+        <img src="https://imgs.search.brave.com/yAPr8kT1l2eKiU0iLc1X9hxfYdZZYwiaxmWHXkAEYOw/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/Y29jaW5vdmEuY29t/L3dwLWNvbnRlbnQv/dXBsb2Fkcy8yMDE2/LzAyL21pZ2FzLWFu/ZGFsdXphcy0xNDQw/eDgxMC5qcGc" alt="Migas">
+      </div>
+      <div class="modal-right">
+        <button class="modal-close" aria-label="Tanca" data-modal-close="migasModal">&times;</button>
+        <h4>Migas</h4>
+        <p><strong>Història:</strong> Menjar de pastors: pa sec fregit amb all i altres acompanyaments. Energia i sabor per la jornada.</p>
+        <p class="ing"><strong>Ingredients:</strong> Pa dur, alls, oli d'oliva, xoriço i cansalada.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Flamenquines -->
+  <div id="flamenquinesModal" class="modal" aria-hidden="true" role="dialog" aria-label="Flamenquines">
+    <div class="modal-box">
+      <div class="modal-left">
+        <img src="https://imgs.search.brave.com/ePvy1OjNMvBlQPMv3TohCQTZJ4VqRq145kEgwNHh8oI/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pLnBp/bmltZy5jb20vb3Jp/Z2luYWxzLzkxL2Y5/L2VmLzkxZjllZmNj/OTQwNGRhNzI3MmIw/MjQxMmU1NzUyNjBj/LmpwZw" alt="Flamenquines">
+      </div>
+      <div class="modal-right">
+        <button class="modal-close" aria-label="Tanca" data-modal-close="flamenquinesModal">&times;</button>
+        <h4>Flamenquines</h4>
+        <p><strong>Història:</strong> Rotllets arrebossats que combinen carns i pernil; cruixent per fora i sucós per dins.</p>
+        <p class="ing"><strong>Ingredients:</strong> Carn tallada fina, pernil, ou, farina i pa ratllat per arrebossar.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pescaito -->
+  <div id="pescaitoModal" class="modal" aria-hidden="true" role="dialog" aria-label="Pescaito frito">
+    <div class="modal-box">
+      <div class="modal-left">
+        <img src="https://imgs.search.brave.com/TtQ7JHwDeyVqyLVxXekd3oVx20G0xbKdllfmgLv7KkE/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWct/Z2xvYmFsLmNwY2Ru/LmNvbS9yZWNpcGVz/L2ZmYWU1NjJhZmEw/MzgxZjEvMzAweDIy/MGNxNzAvYm9xdWVy/b25lcy1mcml0b3Mt/YWwtbGltb24tZW4t/c2FsbXVlcmEtZm90/by1wcmluY2lwYWwu/anBn" alt="Pescaito frito">
+      </div>
+      <div class="modal-right">
+        <button class="modal-close" aria-label="Tanca" data-modal-close="pescaitoModal">&times;</button>
+        <h4>Pescaito frito</h4>
+        <p><strong>Història:</strong> Tradició costanera d'Andalusia. Peixos petits arrebossats, un clàssic de platets per compartir.</p>
+        <p class="ing"><strong>Ingredients:</strong> Boquerons (o peixet), llimona, farina, sal i oli d'oliva per fregir.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Rabo -->
+  <div id="raboModal" class="modal" aria-hidden="true" role="dialog" aria-label="Rabo de Toro">
+    <div class="modal-box">
+      <div class="modal-left">
+        <img src="https://imgs.search.brave.com/0Nb_TzhUPn7dDECCHPXFQ7KncnFeEEmYN2i_ALBo1Jw/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/ZWxhZGVyZXpvLmNv/bS93cC1jb250ZW50/L3VwbG9hZHMvMjAx/MC8wNi9yYWJvLWRl/LXRvcm8tZ3Vpc2Fk/by0xLTEyMDB4ODAx/LmpwZw" alt="Rabo de Toro">
+      </div>
+      <div class="modal-right">
+        <button class="modal-close" aria-label="Tanca" data-modal-close="raboModal">&times;</button>
+        <h4>Rabo de Toro</h4>
+        <p><strong>Història:</strong> Estofat tradicional de cocció llarga, molt saborós. Plat de celebració i arrels rurals.</p>
+        <p class="ing"><strong>Ingredients:</strong> Cua de bou, verdures, vi negre, herbes aromàtiques.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pestiños -->
+  <div id="pestinosModal" class="modal" aria-hidden="true" role="dialog" aria-label="Pestiños">
+    <div class="modal-box">
+      <div class="modal-left">
+        <img src="https://imgs.search.brave.com/nusU_bOGniP1zfGwJfKe3xIRf7mWCWk8VjjP7PufcSc/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly90My5m/dGNkbi5uZXQvanBn/LzAwLzI3LzI0Lzcw/LzI0MF9GXzI3MjQ3/MDM0XzQ5bldEdzFp/OG9ramYzcEhCckls/SnZtaE9JN2hxS1Zs/LmpwZw" alt="Pestiños">
+      </div>
+      <div class="modal-right">
+        <button class="modal-close" aria-label="Tanca" data-modal-close="pestinosModal">&times;</button>
+        <h4>Pestiños</h4>
+        <p><strong>Història:</strong> Dolç tradicional, sovint associat a Nadal i Setmana Santa; fregit i banyat en mel.</p>
+        <p class="ing"><strong>Ingredients:</strong> Farina, oli, mel, anís i sèsam.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Piononos -->
+  <div id="piononosModal" class="modal" aria-hidden="true" role="dialog" aria-label="Piononos">
+    <div class="modal-box">
+      <div class="modal-left">
+        <img src="images/pionono.jpg">
+      </div>
+      <div class="modal-right">
+        <button class="modal-close" aria-label="Tanca" data-modal-close="piononosModal">&times;</button>
+        <h4>Piononos</h4>
+        <p><strong>Història:</strong> Postre de Santa Fe (Granada), fi i dolç, sovint capa caramelitzada a sobre.</p>
+        <p class="ing"><strong>Ingredients:</strong> Massa fina, crema, sucre i caramel.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Roscos -->
+  <div id="roscosModal" class="modal" aria-hidden="true" role="dialog" aria-label="Roscos de Loja">
+    <div class="modal-box">
+      <div class="modal-left">
+        <img src="https://imgs.search.brave.com/fzGeCgYsG0yxkZd6A7UVlwFywHWJjvFc1ub9CCYA5OE/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9ndWlh/Z2FzdHJvbm9taWNh/LnNhYm9yZ3JhbmFk/YS5lcy93cC1jb250/ZW50L3VwbG9hZHMv/MjAyMi8xMS9yb3Nj/b3MyLmpwZw" alt="Roscos de Loja">
+      </div>
+      <div class="modal-right">
+        <button class="modal-close" aria-label="Tanca" data-modal-close="roscosModal">&times;</button>
+        <h4>Roscos de Loja</h4>
+        <p><strong>Història:</strong> Petits pastissets de Loja amb merengue envoltat.</p>
+        <p class="ing"><strong>Ingredients:</strong> Pa de pessic amb merengue.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Torrija -->
+  <div id="torrijaModal" class="modal" aria-hidden="true" role="dialog" aria-label="Torrija">
+    <div class="modal-box">
+      <div class="modal-left">
+        <img src="images/torrija.jpg" alt="Torrija">
+      </div>
+      <div class="modal-right">
+        <button class="modal-close" aria-label="Tanca" data-modal-close="torrijaModal">&times;</button>
+        <h4>Torrija</h4>
+        <p><strong>Història:</strong> Postre de Setmana Santa fet amb pa remullat en llet, fregit i endolcit.</p>
+        <p class="ing"><strong>Ingredients:</strong> Pa, llet, ou, canyella, sucre per damunt.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================
+       SCRIPTS: modal handling, accesibilidad, animacions
+       ====================== -->
+  <script>
+    // UTIL: obrir modal si existeix
+    function openModalSafe(modalId) {
+      const modal = document.getElementById(modalId);
+      if (!modal) { console.warn('Modal no trobat:', modalId); return; }
+      // tancar qualsevol modal obert primer (opcional)
+      document.querySelectorAll('.modal[aria-hidden="false"]').forEach(m => {
+        m.setAttribute('aria-hidden','true');
+      });
+      modal.setAttribute('aria-hidden','false');
+      // focus management
+      const closeBtn = modal.querySelector('[data-modal-close]');
+      if (closeBtn) closeBtn.focus();
+      // prevent body scroll
+      document.documentElement.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModalSafe(modalId) {
+      const modal = document.getElementById(modalId);
+      if (!modal) return;
+      modal.setAttribute('aria-hidden','true');
+      // restore scroll if no other modal open
+      if (!document.querySelector('.modal[aria-hidden="false"]')) {
+        document.documentElement.style.overflow = '';
+        document.body.style.overflow = '';
+      }
+    }
+
+    // map click on card -> modal
+    document.addEventListener('click', (e) => {
+      // if clicked on a card (or its child), find closest with data-modal
+      const card = e.target.closest('[data-modal]');
+      if (card) {
+        const modalId = card.getAttribute('data-modal');
+        if (modalId) openModalSafe(modalId);
+        return;
+      }
+      // close button
+      const closeTarget = e.target.closest('[data-modal-close]');
+      if (closeTarget) {
+        const targetId = closeTarget.getAttribute('data-modal-close');
+        if (targetId) closeModalSafe(targetId);
+        return;
+      }
+      // click on backdrop to close
+      if (e.target.classList.contains('modal')) {
+        closeModalSafe(e.target.id);
+      }
+    });
+
+    // keyboard accessibility: Enter on card to open, Esc to close
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.modal[aria-hidden="false"]').forEach(m => closeModalSafe(m.id));
+      }
+      if (e.key === 'Enter') {
+        const focused = document.activeElement;
+        if (focused && focused.hasAttribute('data-modal')) {
+          const id = focused.getAttribute('data-modal');
+          if (id) openModalSafe(id);
+        }
+      }
+    });
+
+    // keyboard tab trap and focus handling within modal (basic)
+    document.addEventListener('focusin', function(e){
+      // if focus enters a visible modal, we keep it there
+      const openModal = document.querySelector('.modal[aria-hidden="false"]');
+      if (!openModal) return;
+      if (!openModal.contains(e.target)) {
+        const focusable = openModal.querySelector('[data-modal-close]') || openModal;
+        if (focusable) focusable.focus();
+      }
+    });
+
+    // Start entrance animation stagger for cards
+    window.addEventListener('load', () => {
+      const cards = document.querySelectorAll('.card');
+      cards.forEach((c, i) => {
+        c.style.animation = `cardIn 600ms ease ${i * 80}ms forwards`;
+      });
+    });
+
+    // cardIn keyframe injection for JS-based timing
+    (function addCardKeyframe(){
+      const style = document.createElement('style');
+      style.innerHTML = `
+        @keyframes cardIn {
+          from { opacity:0; transform: translateY(28px) scale(.995); }
+          to { opacity:1; transform: translateY(0) scale(1); }
+        }
+      `;
+      document.head.appendChild(style);
+    })();
+  </script>
+</body>
+</html>
